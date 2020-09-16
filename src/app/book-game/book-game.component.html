@@ -1,0 +1,102 @@
+<form [formGroup]="bookingForm" (ngSubmit)="onSubmit()" class="form-group" class="float-left">
+    <table>
+		<tr>
+			<td> <label for="city">Location </label></td>
+			<td>
+				<select id="location" name="location" formControlName="location" #t (change)="onLocationChange(t)" 
+					class="form-control" [ngClass]="{ 'is-invalid': submitted && location.errors }">
+				  <option [ngValue]="loc" *ngFor="let loc of locationList">
+					{{loc}}
+				  </option>
+				</select>
+				<div *ngIf="submitted && location.errors" class="invalid-feedback">
+					<div *ngIf="location.errors.required">Location is required</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td><label for="game">Games </label></td>
+			<td>
+				<select id="game" name="game" formControlName="game" #g (change)="onGameChange(g)"
+					class="form-control" [ngClass]="{ 'is-invalid': submitted && game.errors }">
+					<option [ngValue]="gam" *ngFor="let gam of games">
+						{{gam}}
+					</option>
+				</select>
+				<div *ngIf="submitted && game.errors" class="invalid-feedback">
+					<div *ngIf="game.errors.required">Game is required</div>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td><label for="date">Choose Date </label></td>
+			<td>
+                <input type="date" id="date" name="date" formControlName="date" #d 
+					(change)="onDateChange(d.value)" [min]="today" [max]="oneWeek" class="form-control" 
+					[ngClass]="{ 'is-invalid': submitted && date.errors }">
+				<div *ngIf="submitted && date.errors" class="invalid-feedback">
+					<div *ngIf="date.errors.required">Date is required</div>
+				</div>
+			</td>
+        </tr>
+        <tr>
+			<td><label for="startTime">Choose Start Time </label></td>
+			<td>
+				<input type="time" id="startTime" name="startTime" formControlName="startTime" #t1 (change)="onStartTimeChange(t1.value)"
+					class="form-control" [ngClass]="{ 'is-invalid': submitted && startTime.errors }">
+				<div *ngIf="submitted && startTime.errors" class="invalid-feedback">
+					<div *ngIf="startTime.errors.required">Start Time is required</div>
+				</div>
+			</td>
+        </tr>
+        <tr>
+			<td><label for="endTime">Choose End Time </label></td>
+			<td>
+				<input type="time" id="endTime" name="endTime" formControlName="endTime" #t2 (change)="onEndTimeChange(t2.value)"
+					class="form-control" [ngClass]="{ 'is-invalid': submitted && endTime.errors }">
+				<div *ngIf="submitted && endTime.errors" class="invalid-feedback">
+					<div *ngIf="endTime.errors.required">End Time is required</div>
+				</div>
+			</td>
+        </tr>
+        <!--<tr>
+			<td><label for="bufferStartTime">Choose Buffer Start Time </label></td>
+			<td>
+				<input type="time" id="bufferStartTime" name="bufferStartTime" (change)="onBufferStartTimeChange(bt1.value)"
+					formControlName="bufferStartTime" #bt1 class="form-control">
+			</td>
+        </tr>
+        <tr>
+			<td><label for="bufferEndTime">Choose Buffer End Time </label></td>
+			<td>
+				<input type="time" id="bufferEndTime" name="bufferEndTime" (change)="onBufferEndTimeChange(bt2.value)"
+					formControlName="bufferEndTime" #bt2 class="form-control">
+			</td>
+		</tr>-->
+    </table>
+    <div>
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Book
+        </button>
+        <a routerLink="/login" class="btn btn-link">Cancel</a>
+    </div>
+</form>
+<div  class="col-sm-12 offset-sm-9">
+	<div *ngIf="getLoading && (currentBookingResults == null || currentBookingResults == '')" class="spinner-border spinner-border-sm mr-1"></div>
+	<div *ngIf = "currentBookingResults != null && currentBookingResults != '' && currentBookingResults != undefined">
+		<div class="alert alert-info" >Bookings at {{location.value}} location for {{game.value}}</div>
+		<table class = "table-border">
+			<tr class="table-border">
+				<th class="table-border">Name</th>
+				<th class="table-border">Start Time</th>
+				<th class="table-border">End Time</th>
+			</tr>
+			<tr *ngFor = "let results of currentBookingResults | keyvalue" class="table-border">
+				<td class="table-border">{{results.value[1]['name']}}</td>
+				<td class="table-border">{{results.value[1]['startTime']}}</td>
+				<td class="table-border">{{results.value[1]['endTime']}}</td>
+			</tr>
+		</table>
+	</div>
+</div>

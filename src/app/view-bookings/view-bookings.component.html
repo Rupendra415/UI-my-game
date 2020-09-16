@@ -1,0 +1,24 @@
+<table *ngIf = "myBookings != null && myBookings != '' && myBookings != undefined" style="width:100%">
+    <tr>
+        <th>Location</th>
+        <th>Date</th>
+        <th>Game</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th></th>
+    </tr>
+    <tr *ngFor = "let results of myBookings | keyvalue">
+        <td>{{results.value[1]['location']}}</td>
+        <td>{{results.value[1]['date']}}</td>
+        <td>{{results.value[1]['game']}}</td>
+        <td>{{results.value[1]['startTime']}}</td>
+        <td>{{results.value[1]['endTime']}}</td>
+        <td>
+            <button [disabled]="loading" class="btn btn-primary" (click) = "onDelete(results.value[1]['id'])">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Delete
+            </button>
+        </td>
+    </tr>
+</table>
+

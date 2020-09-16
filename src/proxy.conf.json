@@ -1,0 +1,7 @@
+{
+    "*": {
+        "target": "http://localhost:8080/myGame/all",
+        "secure": false,
+        "logLevel": "debug"
+    }
+}
